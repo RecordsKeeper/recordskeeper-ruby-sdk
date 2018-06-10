@@ -56,5 +56,10 @@
 #	puts asset_count      # prints the address count
 #	puts issue_qty        # prints assets issued quantity
 #	puts issue_id         # prints assets issued transaction id
+# === 3. sendAsset
+# This function is used to send an asset.
+#	txid = sendAsset         # Function call
+#
+#	puts txid                  # prints tx id of the sent asset
 class Assets
 end

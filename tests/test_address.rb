@@ -1,10 +1,5 @@
 require 'test/unit'
 require_relative('C:\Users\my pc\Desktop\RK-Ruby-Lib\Lib\address.rb')
-# load '.\RK-Ruby-Lib\Lib\address.rb'
-# load '/RK-Ruby-Lib/Lib/address.rb'
-# rb_load_file('address.rb')
-# require_relative('address.rb')
-# require './address.rb'
 
 class AddressTest < Test::Unit::TestCase
   @@cfg = YAML::load(File.open('config.yaml','r'))

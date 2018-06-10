@@ -10,11 +10,9 @@ require 'httparty'
 require 'json'
 require 'binary_parser'
 require 'yaml'
-require 'uri'
 
 class Block
 
-	include HTTParty
 	#Entry point for accessing Block class resources.
 	#Import values from config file.
 	cfg = YAML::load(File.open('config.yaml','r'))
@@ -58,12 +56,11 @@ class Block
 		difficulty = out[0]['result']['difficulty']									# variable returns difficulty
 		tx = []																											# list to store transaction ids
 		for i in 0...tx_count
-			tx.push(out[0]['result']['tx'][i])												# pushes transaction ids onto tx list
+			tx.push(out[0]['result']['tx'][i])										# pushes transaction ids onto tx list
 		end
 		return  tx_count, tx, miner, size, nonce, blockHash, prevblock, nextblock, merkleroot, blocktime, difficulty;
 	end
-	# hello = blockinfo "100"
-	# puts hello
+
 	def self.retrieveBlocks block_range
 		blockhash = []
 		miner = []
@@ -87,6 +84,5 @@ class Block
 		end
 		return blockhash, miner, blocktime, tx_count;
 	end
-	# hello = retrieveBlocks "10-20"
-	# puts hello
+
 end

@@ -48,8 +48,6 @@ class Address
 		address = out[0]['result']
 		return address															# Returns new address
 	end
-	# newAddress = getAddress											# getAddress function call
-	# puts newAddress															# Prints the new generated address
 
 	# Function to generate a new multisignature address
 	def self.getMultisigAddress nrequired, key		#getMultisigAddress() function definition
@@ -93,8 +91,6 @@ class Address
 		end
 		return res;																										# Returns new multisig address
 	end
-	#newAddress = getMultisigWalletAddress nrequired, key						# Function call
-	#puts newAddress 																								# Prints new multisig wallet address
 
 	# Function to list all addresses and no of addresses on the node's wallet
 	def self.retrieveAddresses
@@ -113,9 +109,7 @@ class Address
 			address.push(out[0]['result'][i])
 		end
 		return address, address_count;																			# Returns all addresses and address count
-  end
-	# allAddresses, address_count = retrieveAddresses											# Function call
-	# pust allAddresses, address_count																		# Prints all the addresses and the address count
+	end
 
 	# Function to check if given address is valid or not
 	def self.checkifValid address
@@ -168,8 +162,6 @@ class Address
 		balance = out[0]['result'][0]['qty']
  		return balance;																						# Returns balance of a particular node address
 	end
-	# address_balance = checkBalance address										# Function call
-	# puts address_balance																			# Prints the balance of the address
 
 	# Function to import address on RecordsKeeper Blockchain
 	def self.importAddress public_address
@@ -192,7 +184,5 @@ class Address
 		end
 		return resp;
 	end
-	# import_address = importAddress address														# Function call
-	# puts import_address																								# Prints the response
 
 end

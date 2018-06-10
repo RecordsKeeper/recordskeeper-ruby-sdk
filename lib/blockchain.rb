@@ -8,13 +8,10 @@ require 'rubygems'
 require 'httparty'
 require 'json'
 require 'binary_parser'
-require 'objspace'
 require 'yaml'
-require 'uri'
 
 class Blockchain
 
-	include HTTParty
 	cfg = YAML::load(File.open('config.yaml','r'))
 	@network = cfg['testnet']
 	if @network==cfg['testnet']
@@ -55,8 +52,6 @@ class Blockchain
 		chain_name = result['chain-name']
 		return chain_protocol, chain_description, root_stream, max_blocksize, default_networkport, default_rpcport, mining_diversity, chain_name;										#returns chain parameters
 	end
-	# hello = getChainInfo
-	# puts hello
 
 	# Function to retrieve node's information on RecordsKeeper Blockchain
 	def self.getNodeInfo
@@ -74,8 +69,6 @@ class Blockchain
 		difficulty = out[0]['result']['difficulty']
 		return node_balance, synced_blocks, node_address, difficulty;						# Returns node's details
 	end
-	# hello = getNodeInfo
-	# puts hello
 
 	# Function to retrieve node's permissions on RecordsKeeper Blockchain
 	def self.permissions
@@ -95,8 +88,6 @@ class Blockchain
 		end
 		return permissions;																# Returns list of permissions
 	end
-	# hello = permissions
-	# puts hello
 
 	# Function to retrieve pending transactions information on RecordsKeeper Blockchain
 	def self.getpendingTransactions
@@ -118,13 +109,12 @@ class Blockchain
 		response2 = HTTParty.get(@url, options)
 		out2 = response2.parsed_response
 		tx = []
-		for i in 0...tx_count
+		x = 0
+		begin
 			tx.push(out2[0]['result'])
-		end
+		end until x <tx_count
 		return tx_count, tx;														# Returns pending tx and tx count
 	end
-	# hello = getpendingTransactions
-	# puts hello
 
 	# Function to check node's total balance
 	def self.checkNodeBalance
@@ -139,7 +129,5 @@ class Blockchain
 		balance = out[0]['result']['total'][0]['qty']
 		return balance;														# Returns balance of  node
 	end
-	# hello = checkNodeBalance
-	# puts hello
 
 end

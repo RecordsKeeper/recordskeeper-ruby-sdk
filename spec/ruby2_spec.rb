@@ -8,9 +8,48 @@
 #   end
 # end
 $LOAD_PATH.unshift File.expand_path('../../lib', __FILE__)
-require_relative ('test_address.rb')
-require_relative ('test_block.rb')
-require_relative ('test_blockchain.rb')
-require_relative ('test_permissions.rb')
-require_relative ('test_stream.rb')
-require_relative ('test_transaction.rb')
+require_relative ('address_spec.rb')
+require_relative ('block_spec.rb')
+require_relative ('blockchain_spec.rb')
+require_relative ('permissions_spec.rb')
+require_relative ('stream_spec.rb')
+require_relative ('transaction_spec.rb')
+require_relative ('assets_spec.rb')
+require_relative ('wallet_spec.rb')
+
+RSpec.describe 'test_cases' do
+  it 'succeeds' do
+    true
+    require_relative ('address_spec.rb')
+  end
+  it 'succeeds' do
+    true
+    require_relative ('block_spec.rb')
+  end
+  it 'succeeds' do
+    true
+    require_relative ('blockchain_spec.rb')
+  end
+  it 'succeeds' do
+    true
+    require_relative ('permissions_spec.rb')
+  end
+  it 'succeeds' do
+    true
+    require_relative ('stream_spec.rb')
+  end
+  it 'succeeds' do
+    true
+    require_relative ('transaction_spec.rb')
+  end
+  it 'succeeds' do
+    true
+    require_relative ('assets_spec.rb')
+  end
+  it 'succeeds' do
+    true
+    require_relative ('wallet_spec.rb')
+  end
+
+
+end

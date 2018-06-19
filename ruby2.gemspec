@@ -4,7 +4,7 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require "ruby2/version"
 
 Gem::Specification.new do |spec|
-  spec.name          = "ruby2"
+  spec.name          = "Recordskeeper-SDK-Ruby"
   spec.version       = Ruby2::VERSION
   spec.authors       = ["Yusra Qureshi"]
   spec.email         = ["yusraq10"]
@@ -13,18 +13,6 @@ Gem::Specification.new do |spec|
   spec.description   = %q{This is a Ruby library for RecordsKeeper.}
   spec.homepage      = "https://github.com/RecordsKeeper"
   spec.license       = "MIT"
-
-  # # Prevent pushing this gem to RubyGems.org. To allow pushes either set the 'allowed_push_host'
-  # # to allow pushing to a single host or delete this section to allow pushing to any host.
-  # if spec.respond_to?(:metadata)
-  #   spec.metadata["allowed_push_host"] = "TODO: Set to 'http://mygemserver.com'"
-  # else
-  #   raise "RubyGems 2.0 or newer is required to protect against " \
-  #     "public gem pushes."
-  # end
-
-  # Specify which files should be added to the gem when it is released.
-  # The `git ls-files -z` loads the files in the RubyGem that have been added into git.
   spec.files         = Dir.chdir(File.expand_path('..', __FILE__)) do
     `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(test|spec|features)/}) }
   end
@@ -39,5 +27,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency "hex_string", "~> 1.0.1"
   spec.add_dependency "binary_parser", "~> 1.3.0"
   spec.add_dependency "json", "~> 2.1.0"
+  spec.add_dependency "test-unit", "~>3.2.8"
+  spec.add_dependency "rspec-rails", "~> 3.7.2"
 
 end

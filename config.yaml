@@ -1,0 +1,41 @@
+testnet:
+   url: 'http://35.170.155.89:8378'
+   rkuser: 'rkrpc'
+   passwd: '3W4hprQLwshx7dijhSBY3f2ofN4cdjbheCeR1VF7zxcp'
+   chain: 'recordskeeper-test'
+   port: 8378
+   # url: 'http://10.5.50.78:9538'
+   # rkuser: 'rkrpc'
+   # passwd: '929DYR9NqPW2bT3np4yV8JoK488xcjYaMghBjtPieXN6'
+   # chain: 'kronos'
+   # port: 9538
+   stream: 'root'
+   testdata: 'test'
+   signedtestdata: 'INgL7+qJCbestQcawLFMmyvY04MB8UDYv4sngM9AcCJ2DRO6ucZBk8gvxUgTvUyFy9+F4VaZXXv+x/mGCxo4UAk='
+   amount: 0.4
+   dumptxid: '9608f1e6fc503b239f546f5deb1e62d1b596c4d866dc308ae47f78a7dab62c7b'
+   privatekey: 'cNhDPgqGeU83weydEu5v6opXjeUBkevHLvAupAv9vkAKMs4Z3fdX'
+   validaddress: 'mwp2SHRUaqA7EvfdNFzZkMf1cMZGSh5d1z'
+   invalidaddress: '1UCjNZmSNJxKNes6SFBfMKCahAPJ7DGHCvfh6E'
+   miningaddress: 'mpC8A8Fob9ADZQA7iLrctKtwzyWTx118Q9'
+   nonminingaddress: 'mmx8H2YZDqsvhTt1YHkJpYKkcD1w8JBTgh'
+   multisigaddress: '2NFRa9rBUoF4Ds1SbHAi4UzT3H9YLt7z66Z'
+   wrongimportaddress: '1EV7BcvfVwQ3iodX7dDrU4Gi7jNnpgAegXHvuy'
+   mainaddress: 'n2gNFB8oz4qfmUKCsfwqLo8ineWfocpNMk'
+   permissionaddress: 'n33UedcQ25562cXi587hT3SpVnjsdaDGko'
+   dumptxhex: '010000000156ef0a08ad7aabbb4dc1ac299566892ce99a017e7bf1f0aaabd4e39651d895b20200000000ffffffff03005a6202000000001976a914b2bc8a974aa0b9c4ad82ac0a7017160df0751f5888ac0000000000000000066a0474657374b0305231000000001976a9145f2976565b53d4ed013b6131e98201e89787518688ac00000000'
+   dumpsignedtxhex: '0100000001ec0c16bbe0c4e5d88829e0ca003667405fe88e129e3e5f1cc64d06f8c2c22b9e000000006a4730440220616b14a4f7b83390f25d67cca320bb0574f124e392297b103b381b726ebc510a0220487d9056d972ef98f125c534dca6882ca30462b1a7d79be9054d6ddb2365ebdd0121038c1d7be91850add595b238c541d17cfa6e6d780a410bb7db4930a982cad933d4ffffffff0280969800000000001976a9143fca2a2ce8de270fb57fa48289189b243472843288ac10f4de3a000000001976a9145f2976565b53d4ed013b6131e98201e89787518688ac00000000'
+   samplegetmultisigaddress: "miygjUPKZNV94t9f8FqNvNG9YjCkp5qqBZ, mwDbTVQcATL263JwpoE8AHCMGM5hE1kd7m, mpC8A8Fob9ADZQA7iLrctKtwzyWTx118Q9"
+   samplemerkleroot: 'c6d339bf75cb969baa4c65e1ffd7fade562a191fa90aac9dd495b764f2c1b429'
+   sampleblockhash: '000002d184165e5c18facde8a5678acd975ba9d315eb440752d83dcd70d4abd5'
+   sampledata: "This is test data"
+   sampletransac: "eef0c0c191e663409169db0972cc75ff91e577a072289ee02511b410bc304d90"
+   transactionid: "4b1fbf9fb1e5c93cfee2d37ddc5fef444da0a05cc9354a834dc7155ff861a5e0"
+   sampletxid: 'e3bba87d1f0a980b65f12388d31c734ea38b08d11d00aaab1004e470ca419556'
+
+
+mainnet:
+   url: 'http://35.170.155.89:8378'
+   rkuser: 'rkrpc'
+   passwd: '3W4hprQLwshx7dijhSBY3f2ofN4cdjbheCeR1VF7zxcp'
+   chain: 'recordskeeper'

@@ -10,7 +10,7 @@ require 'binary_parser'
 require 'yaml'
 require 'hex_string'
 
-module Ruby2
+module RecordsKeeperRuby
 	class Assets
 		# # Entry point for accessing Block class resources.
 		# # Import values from config file.

@@ -1,0 +1,9 @@
+  require "RecordsKeeperRuby/version"
+  require_relative ('RecordsKeeperRuby/address')
+  require_relative ('RecordsKeeperRuby/assets')
+  require_relative ('RecordsKeeperRuby/block')
+  require_relative ('RecordsKeeperRuby/blockchain')
+  require_relative ('RecordsKeeperRuby/permissions')
+  require_relative ('RecordsKeeperRuby/stream')
+  require_relative ('RecordsKeeperRuby/transaction')
+  require_relative ('RecordsKeeperRuby/wallet')

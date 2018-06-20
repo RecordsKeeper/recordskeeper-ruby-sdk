@@ -11,7 +11,7 @@ require 'json'
 require 'binary_parser'
 require 'yaml'
 
-module Ruby2
+module RecordsKeeperRuby
 	class Block
 
 		#Entry point for accessing Block class resources.
@@ -61,7 +61,6 @@ module Ruby2
 			end
 			return  tx_count, tx, miner, size, nonce, blockHash, prevblock, nextblock, merkleroot, blocktime, difficulty;
 		end
-
 
 		def self.retrieveBlocks block_range
 			blockhash = []

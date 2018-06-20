@@ -1,18 +1,19 @@
 
 lib = File.expand_path("../lib", __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require "ruby2/version"
+require "RecordsKeeperRuby/version"
 
 Gem::Specification.new do |spec|
-  spec.name          = "Recordskeeper-SDK-Ruby"
-  spec.version       = Ruby2::VERSION
+  spec.name          = "RecordsKeeperRubyLib"
+  spec.version       = RecordsKeeperRuby::VERSION
   spec.authors       = ["Yusra Qureshi"]
   spec.email         = ["yusraq10"]
 
-  spec.summary       = %q{RecordsKeeper-SDK-Ruby}
-  spec.description   = %q{This is a Ruby library for RecordsKeeper.}
+  spec.summary       = %q{Recordskeeper-SDK-Ruby}
+  spec.description   = %q{This is a Recordskeeper library in Ruby.}
   spec.homepage      = "https://github.com/RecordsKeeper"
   spec.license       = "MIT"
+
   spec.files         = Dir.chdir(File.expand_path('..', __FILE__)) do
     `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(test|spec|features)/}) }
   end

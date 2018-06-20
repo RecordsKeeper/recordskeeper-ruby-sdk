@@ -10,7 +10,7 @@ require 'binary_parser'
 require 'yaml'
 
 # Address class to access address related functions
-module Ruby2
+module RecordsKeeperRuby
 	class Address
 		# Import values from configuration file.
 		cfg = YAML::load(File.open('config.yaml','r'))

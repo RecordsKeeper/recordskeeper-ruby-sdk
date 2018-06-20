@@ -1,7 +1,7 @@
 require 'test/unit'
-require_relative ('ruby2/stream.rb')
+require_relative ('RecordsKeeperRuby/stream.rb')
 
-module Ruby2
+module RecordsKeeperRuby
   class StreamTest < Test::Unit::TestCase
     @@cfg = YAML::load(File.open('config.yaml','r'))
     @@net = Stream.variable

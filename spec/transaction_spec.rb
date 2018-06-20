@@ -1,7 +1,7 @@
 require 'test/unit'
-require_relative ('ruby2/transaction.rb')
+require_relative ('RecordsKeeperRuby/transaction.rb')
 
-module Ruby2
+module RecordsKeeperRuby
   class TransactionTest < Test::Unit::TestCase
     @@cfg = YAML::load(File.open('config.yaml','r'))
     @@net = Transaction.variable

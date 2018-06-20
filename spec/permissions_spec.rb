@@ -1,7 +1,7 @@
 require 'test/unit'
-require_relative ('ruby2/permissions.rb')
+require_relative ('RecordsKeeperRuby/permissions.rb')
 
-module Ruby2
+module RecordsKeeperRuby
   class PermissionsTest < Test::Unit::TestCase
     @@cfg = YAML::load(File.open('config.yaml','r'))
     @@net = Permissions.variable

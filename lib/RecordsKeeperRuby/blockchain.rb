@@ -10,7 +10,7 @@ require 'json'
 require 'binary_parser'
 require 'yaml'
 
-module Ruby2
+module RecordsKeeperRuby
 	class Blockchain
 
 		cfg = YAML::load(File.open('config.yaml','r'))
@@ -31,7 +31,7 @@ module Ruby2
 			net = @network
 			return net
 		end
-				
+
 		# Function to retrieve RecordsKeeper Blockchain parameters
 		def self.getChainInfo
 			auth = {:username => @user, :password => @password}

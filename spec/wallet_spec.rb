@@ -1,7 +1,7 @@
 require 'test/unit'
-require_relative ('ruby2/wallet.rb')
+require_relative ('RecordsKeeperRuby/wallet.rb')
 
-module Ruby2
+module RecordsKeeperRuby
   class WalletTest < Test::Unit::TestCase
     @@cfg = YAML::load(File.open('config.yaml','r'))
     @@net = Wallet.variable

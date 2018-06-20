@@ -1,7 +1,7 @@
 require 'test/unit'
-require_relative ('ruby2/block.rb')
+require_relative ('RecordsKeeperRuby/block.rb')
 
-module Ruby2
+module RecordsKeeperRuby
   class BlockTest < Test::Unit::TestCase
     @@cfg = YAML::load(File.open('config.yaml','r'))
     @@net = Block.variable

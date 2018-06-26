@@ -1,7 +1,8 @@
 require 'test/unit'
-require_relative ('RecordsKeeperRuby/address.rb')
+require 'json'
+require_relative ('RecordsKeeperRubyLib/address.rb')
 
-module RecordsKeeperRuby
+module RecordsKeeperRubyLib
   class AddressTest < Test::Unit::TestCase
     @@cfg = YAML::load(File.open('config.yaml','r'))
     @@net = Address.variable

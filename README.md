@@ -1,1 +1,1 @@
-# RecordsKeeper-SDK-Ruby
+# RecordsKeeperRubyLib

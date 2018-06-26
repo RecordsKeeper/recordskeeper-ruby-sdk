@@ -1,14 +1,15 @@
 require 'test/unit'
-require_relative ('RecordsKeeperRuby/wallet.rb')
+require 'json'
+require_relative ('RecordsKeeperRubyLib/wallet.rb')
 
-module RecordsKeeperRuby
+module RecordsKeeperRubyLib
   class WalletTest < Test::Unit::TestCase
     @@cfg = YAML::load(File.open('config.yaml','r'))
     @@net = Wallet.variable
 
     def test_createwallet
-      address = Wallet.createWallet[0]
-      addresslength = address.length
+      address = JSON.parse Wallet.createWallet
+      addresslength = address['public_address'].length
       assert_equal addresslength, 38
     end
 
@@ -18,8 +19,8 @@ module RecordsKeeperRuby
     end
 
     def test_retrievewalletinfo
-      wallet_balance = Wallet.retrieveWalletinfo[0]
-      assert_operator wallet_balance, :>=, 0
+      wallet_balance = JSON.parse Wallet.retrieveWalletinfo
+      assert_operator wallet_balance['balance'], :>=, 0
     end
 
     def test_signmessage

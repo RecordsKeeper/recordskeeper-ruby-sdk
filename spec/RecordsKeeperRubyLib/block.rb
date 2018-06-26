@@ -11,24 +11,17 @@ require 'json'
 require 'binary_parser'
 require 'yaml'
 
-module RecordsKeeperRuby
+module RecordsKeeperRubyLib
 	class Block
 
 		#Entry point for accessing Block class resources.
 		#Import values from config file.
 		cfg = YAML::load(File.open('config.yaml','r'))
-		@network = cfg['testnet']								# Network variable to store the networrk that you want to access
-		if @network==cfg['testnet']
-			@url = cfg['testnet']['url']
-			@user = cfg['testnet']['rkuser']
-			@password = cfg['testnet']['passwd']
-			@chain = cfg['testnet']['chain']
-		else
-			@url = cfg['mainnet']['url']
-			@user = cfg['mainnet']['rkuser']
-			@password = cfg['mainnet']['passwd']
-			@chain = cfg['mainnet']['chain']
-		end
+		@network = cfg['network']
+		@url = cfg['network']['url']
+		@user = cfg['network']['rkuser']
+		@password = cfg['network']['passwd']
+		@chain = cfg['network']['chain']
 
 		def self.variable
 			net = @network
@@ -36,11 +29,12 @@ module RecordsKeeperRuby
 		end
 
 		def self.blockinfo block_height
+			height = block_height.to_s
 			auth = {:username => @user, :password => @password}
 			options = {
 				:headers => headers= {"Content-Type"=> "application/json","Cache-Control" => "no-cache"},
 				:basic_auth => auth,
-				:body => [ {"method":"getblock","params":[block_height],"jsonrpc":2.0,"id":"curltext","chain_name":@chain}].to_json
+				:body => [ {"method":"getblock","params":[height],"jsonrpc":2.0,"id":"curltext","chain_name":@chain}].to_json
 			}
 			response = HTTParty.get(@url, options)
 			out = response.parsed_response
@@ -59,7 +53,9 @@ module RecordsKeeperRuby
 			for i in 0...tx_count
 				tx.push(out[0]['result']['tx'][i])										# pushes transaction ids onto tx list
 			end
-			return  tx_count, tx, miner, size, nonce, blockHash, prevblock, nextblock, merkleroot, blocktime, difficulty;
+			retrieved = { :tx_count => tx_count,:miner => miner,:size => size,:nonce => nonce,:blockHash => blockHash,:prevblock => prevblock, :nextblock => nextblock,:merkleroot => merkleroot,:blocktime => blocktime,:difficulty => difficulty,:tx => tx}
+			retrievedinfo = JSON.generate retrieved
+			return retrievedinfo
 		end
 
 		def self.retrieveBlocks block_range
@@ -83,7 +79,10 @@ module RecordsKeeperRuby
 				blocktime.push(out[0]['result'][i]['time'])
 				tx_count.push(out[0]['result'][i]['txcount'])
 			end
-			return blockhash, miner, blocktime, tx_count;
+			retrieved = { :blockhash => blockhash,:miner => miner,:blocktime => blocktime,:tx_count => tx_count}
+			retrievedinfo = JSON.generate retrieved
+			return retrievedinfo
 		end
+
 	end
 end

@@ -10,7 +10,7 @@ require 'json'
 require 'binary_parser'
 require 'yaml'
 
-module RecordsKeeperRuby
+module RecordsKeeperRubyLib
 	class Blockchain
 
 		cfg = YAML::load(File.open('config.yaml','r'))
@@ -44,7 +44,9 @@ module RecordsKeeperRuby
 			default_rpcport = result['default-rpc-port']
 			mining_diversity = result['mining-diversity']
 			chain_name = result['chain-name']
-			return chain_protocol, chain_description, root_stream, max_blocksize, default_networkport, default_rpcport, mining_diversity, chain_name;										#returns chain parameters
+			info = {:chain_protocol => chain_protocol, :chain_description => chain_description, :root_stream => root_stream, :max_blocksize => max_blocksize, :default_networkport => default_networkport, :default_rpcport => default_rpcport, :mining_diversity => mining_diversity, :chain_name => chain_name}										#returns chain parameters
+			retrieved = JSON.generate info
+			return retrieved
 		end
 
 		# Function to retrieve node's information on RecordsKeeper Blockchain
@@ -61,7 +63,9 @@ module RecordsKeeperRuby
 			synced_blocks = out[0]['result']['blocks']
 			node_address = out[0]['result']['nodeaddress']
 			difficulty = out[0]['result']['difficulty']
-			return node_balance, synced_blocks, node_address, difficulty;						# Returns node's details
+ 			info = {:node_balance => node_balance, :synced_blocks => synced_blocks,:node_address => node_address,:difficulty => difficulty}						# Returns node's details
+			retrieved = JSON.generate info
+			return retrieved
 		end
 
 		# Function to retrieve node's permissions on RecordsKeeper Blockchain
@@ -96,7 +100,7 @@ module RecordsKeeperRuby
 			tx_count = out[0]['result']['size']											# Stores pending tx count
 
 			if tx_count==0
-				return tx_count;
+				tx = "No pending transactions"
 			else
 				auth = {:username => @user, :password => @password}
 				options = {
@@ -106,14 +110,14 @@ module RecordsKeeperRuby
 				}
 				response2 = HTTParty.get(@url, options)
 				out2 = response2.parsed_response
-				puts out2
 				tx = []
 				for i in 0...tx_count
 					tx.push(out2[0]['result'])
 				end
-
-				return tx_count, tx;														# Returns pending tx and tx count
 			end
+			pending = {:tx_count => tx_count,:tx => tx}
+			pendingtransac = JSON.generate pending														# Returns pending tx and tx count
+			return pendingtransac
 		end
 
 		# Function to check node's total balance

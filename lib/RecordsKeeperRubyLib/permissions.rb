@@ -10,25 +10,18 @@ require 'binary_parser'
 require 'yaml'
 require 'hex_string'
 
-module RecordsKeeperRuby
+module RecordsKeeperRubyLib
 
 	class Permissions
 
 		# Entry point for accessing Block class resources.
 		# Import values from config file.
 		cfg = YAML::load(File.open('config.yaml','r'))
-		@network = cfg['testnet']								# Network variable to store the networrk that you want to access
-		if @network==cfg['testnet']
-			@url = cfg['testnet']['url']
-			@user = cfg['testnet']['rkuser']
-			@password = cfg['testnet']['passwd']
-			@chain = cfg['testnet']['chain']
-		else
-			@url = cfg['mainnet']['url']
-			@user = cfg['mainnet']['rkuser']
-			@password = cfg['mainnet']['passwd']
-			@chain = cfg['mainnet']['chain']
-		end
+		@network = cfg['network']
+		@url = cfg['network']['url']
+		@user = cfg['network']['rkuser']
+		@password = cfg['network']['passwd']
+		@chain = cfg['network']['chain']
 
 		def self.variable
 			net = @network
@@ -72,6 +65,7 @@ module RecordsKeeperRuby
 	    end
 	    return res;									#returns revoke permissions tx id
 	  end
+
 	end
 
 end

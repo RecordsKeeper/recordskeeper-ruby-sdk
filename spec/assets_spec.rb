@@ -1,14 +1,15 @@
 require 'test/unit'
-require_relative ('RecordsKeeperRuby/assets.rb')
+require 'json'
+require_relative ('RecordsKeeperRubyLib/assets.rb')
 
-module RecordsKeeperRuby
+module RecordsKeeperRubyLib
   class AssetsTest < Test::Unit::TestCase
     @@cfg = YAML::load(File.open('config.yaml','r'))
     @@net = Assets.variable
 
     def test_createasset
       txid = Assets.createAsset @@net['validaddress'], "xyz", 100
-      assert_equal txid, nil
+      assert_equal txid, "Asset or stream with this name already exists"
     end
 
     def test_retrieveassets

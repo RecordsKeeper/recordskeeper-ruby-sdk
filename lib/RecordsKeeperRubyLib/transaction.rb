@@ -11,25 +11,18 @@ require 'binary_parser'
 require 'yaml'
 require 'hex_string'
 
-module RecordsKeeperRuby
+module RecordsKeeperRubyLib
 
 	class Transaction
 
 		# Entry point for accessing Block class resources.
 		# Import values from config file.
 		cfg = YAML::load(File.open('config.yaml','r'))
-		@network = cfg['testnet']								# Network variable to store the networrk that you want to access
-		if @network==cfg['testnet']
-			@url = cfg['testnet']['url']
-			@user = cfg['testnet']['rkuser']
-			@password = cfg['testnet']['passwd']
-			@chain = cfg['testnet']['chain']
-		else
-			@url = cfg['mainnet']['url']
-			@user = cfg['mainnet']['rkuser']
-			@password = cfg['mainnet']['passwd']
-			@chain = cfg['mainnet']['chain']
-		end
+		@network = cfg['network']
+		@url = cfg['network']['url']
+		@user = cfg['network']['rkuser']
+		@password = cfg['network']['passwd']
+		@chain = cfg['network']['chain']
 
 		def self.variable
 			net = @network
@@ -53,7 +46,7 @@ module RecordsKeeperRuby
 	  end
 
 	  # Function to create transaction hex on RecordsKeeper Blockchain
-		def self.createRawTransaction sender_address, receiveraddress, amount, data
+		def self.createRawTransaction sender_address, receiveraddress, data, amount
 	    data_hex = data.to_hex_string
 	    datahex = data_hex.delete(' ')
 	    auth = {:username => @user, :password => @password}
@@ -104,7 +97,7 @@ module RecordsKeeperRuby
 	  end
 
 	  # Function to send signed transaction on RecordsKeeper Blockchain
-	  def self.sendSignedTransaction sender_address, receiveraddress, amount, private_key, data
+	  def self.sendSignedTransaction sender_address, receiveraddress, data, amount, private_key
 	    data_hex = data.to_hex_string
 	    datahex = data_hex.delete(' ')
 	    def self.createRawTransaction sender_address, receiveraddress, amount, datahex
@@ -159,7 +152,9 @@ module RecordsKeeperRuby
 	    sent_hex_data = out[0]['result']['data'][0]
 	    sent_data = sent_hex_data.to_byte_string
 	    sent_amount = out[0]['result']['vout'][0]['value']
-	    return sent_data, sent_amount;					#returns data from retrieved transaction
+			retrieve = {:sent_data => sent_data,:sent_amount => sent_amount }
+			retrievedinfo = JSON.generate retrieve
+			return retrievedinfo
 	  end
 
 	  # Function to calculate transaction's fee on RecordsKeeper Blockchain
@@ -177,6 +172,7 @@ module RecordsKeeperRuby
 	    fees = balance_amount.abs - sent_amount
 	    return fees;				#returns fees
 	  end
+
 	end
 
 end

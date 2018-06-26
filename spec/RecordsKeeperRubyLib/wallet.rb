@@ -11,24 +11,16 @@ require 'binary_parser'
 require 'yaml'
 require 'hex_string'
 
-module RecordsKeeperRuby
+module RecordsKeeperRubyLib
 	class Wallet
-
 		# Entry point for accessing Block class resources.
 		# Import values from config file.
 		cfg = YAML::load(File.open('config.yaml','r'))
-		@network = cfg['testnet']								# Network variable to store the networrk that you want to access
-		if @network==cfg['testnet']
-			@url = cfg['testnet']['url']
-			@user = cfg['testnet']['rkuser']
-			@password = cfg['testnet']['passwd']
-			@chain = cfg['testnet']['chain']
-		else
-			@url = cfg['mainnet']['url']
-			@user = cfg['mainnet']['rkuser']
-			@password = cfg['mainnet']['passwd']
-			@chain = cfg['mainnet']['chain']
-		end
+		@network = cfg['network']
+		@url = cfg['network']['url']
+		@user = cfg['network']['rkuser']
+		@password = cfg['network']['passwd']
+		@chain = cfg['network']['chain']
 
 		def self.variable
 			net = @network
@@ -62,8 +54,9 @@ module RecordsKeeperRuby
 				return result;
 	    end
 			import_address = importAddress public_address
-
-			return public_address, private_key, public_key;				#returns public and private key
+			retrieve = {:public_address => public_address,:private_key => private_key,:public_key => public_key}
+			retrievedinfo = JSON.generate retrieve
+			return retrievedinfo
 	  end
 
 		# Function to retrieve private key of a wallet on RecordsKeeper Blockchain
@@ -98,7 +91,9 @@ module RecordsKeeperRuby
 			balance = out[0]['result']['balance']
 			tx_count = out[0]['result']['txcount']
 			unspent_tx = out[0]['result']['utxocount']
-			return balance, tx_count, unspent_tx;					#returns balance, tx count, unspent tx
+			retrieve = {:balance => balance,:tx_count => tx_count,:unspent_tx => unspent_tx}
+			retrievedinfo = JSON.generate retrieve
+			return retrievedinfo
 	  end
 
 		# Function to create wallet's backup on RecordsKeeper Blockchain

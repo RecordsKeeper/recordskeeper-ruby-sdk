@@ -1,7 +1,8 @@
 require 'test/unit'
-require_relative ('RecordsKeeperRuby/stream.rb')
+require 'json'
+require_relative ('RecordsKeeperRubyLib/stream.rb')
 
-module RecordsKeeperRuby
+module RecordsKeeperRubyLib
   class StreamTest < Test::Unit::TestCase
     @@cfg = YAML::load(File.open('config.yaml','r'))
     @@net = Stream.variable
@@ -18,13 +19,13 @@ module RecordsKeeperRuby
     end
 
     def test_retrieve_with_id_address
-      result = Stream.retrieveWithAddress @@net['stream'], @@net['miningaddress'], 5
-      assert_equal result[1][1], @@net['sampledata']
+      result = JSON.parse Stream.retrieveWithAddress @@net['stream'], @@net['miningaddress'], 5
+      assert_equal result['raw_data'][1], @@net['sampledata']
     end
 
     def test_retrieve_with_key
-      result = Stream.retrieveWithKey @@net['stream'], @@net['testdata'], 5
-      assert_equal result[1][1], @@net['sampledata']
+      result = JSON.parse Stream.retrieveWithKey @@net['stream'], @@net['testdata'], 5
+      assert_equal result['raw_data'][1], @@net['sampledata']
     end
 
     def test_verifyData
@@ -33,9 +34,8 @@ module RecordsKeeperRuby
     end
 
     def test_retrieveItems
-      result1 = Stream.retrieveItems @@net['stream'], 5
-      result = result1[2][2]
-      assert_equal result, "This is test data"
+      result1 = JSON.parse Stream.retrieveItems @@net['stream'], 5
+      assert_equal result1['raw_data'][2], "This is test data"
     end
 
   end

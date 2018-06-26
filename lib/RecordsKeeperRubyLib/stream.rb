@@ -10,25 +10,18 @@ require 'binary_parser'
 require 'yaml'
 require 'hex_string'
 
-module RecordsKeeperRuby
+module RecordsKeeperRubyLib
 
 	class Stream
 
 		# Entry point for accessing Block class resources.
 		# Import values from config file.
 		cfg = YAML::load(File.open('config.yaml','r'))
-		@network = cfg['testnet']								# Network variable to store the networrk that you want to access
-		if @network==cfg['testnet']
-			@url = cfg['testnet']['url']
-			@user = cfg['testnet']['rkuser']
-			@password = cfg['testnet']['passwd']
-			@chain = cfg['testnet']['chain']
-		else
-			@url = cfg['mainnet']['url']
-			@user = cfg['mainnet']['rkuser']
-			@password = cfg['mainnet']['passwd']
-			@chain = cfg['mainnet']['chain']
-		end
+		@network = cfg['network']
+		@url = cfg['network']['url']
+		@user = cfg['network']['rkuser']
+		@password = cfg['network']['passwd']
+		@chain = cfg['network']['chain']
 
 		def self.variable
 			net = @network
@@ -79,14 +72,15 @@ module RecordsKeeperRuby
 			key = []
 	    raw_data = []
 	    txid = []
-			i = 0
-			begin
+			for i in 0...count
 				key.push(out[0]['result'][i]['key'])           	  #returns key value of the published data
 	      data = out[0]['result'][i]['data']                #returns hex data
 	      raw_data.push(data.to_byte_string)    						#returns raw data
 	      txid.push(out[0]['result'][i]['txid'])            #returns tx id
-			end until i <count
-	    return key, raw_data, txid;
+			end
+			retrieve = {:key => key,:raw_data => raw_data,:txid => txid}
+			retrievedinfo = JSON.generate retrieve
+			return retrievedinfo
 	  end
 
 	  # Function to retrieve data against a particular key value
@@ -102,15 +96,16 @@ module RecordsKeeperRuby
 			publisher = []
 	    raw_data = []
 	    txid = []
-			i = 0
-			begin
+			for i in 0...count
 				publisher.push(out[0]['result'][i]['publishers'][0])    	#returns publisher's address of published data
 	      data = out[0]['result'][i]['data']                        #returns published hex data
 	      raw_data.push(data.to_byte_string)           						  #returns data published
 	      txid.push(out[0]['result'][i]['txid'])                    #returns transaction id of published data
-			end until i <count
-	    return publisher, raw_data, txid;
-	  end
+			end
+			retrieve = {:publisher => publisher,:raw_data => raw_data,:txid => txid}
+			retrievedinfo = JSON.generate retrieve
+			return retrievedinfo
+	  end	
 
 	  # Function to verify data on RecordsKeeper Blockchain
 		def self.verifyData stream, data, count
@@ -123,10 +118,9 @@ module RecordsKeeperRuby
 	    response = HTTParty.get(@url, options)
 	    out = response.parsed_response
 			raw_data = []
-			i = 0
-			begin
+			for i in 0...count
 				result_data = out[0]['result'][i]['data']						       # returns hex data
-			end until i <count
+			end
 	    if result_data.unicode_normalized?
 				raw_data.push(result_data.to_byte_string)	                 # returns raw data
 			else
@@ -154,15 +148,16 @@ module RecordsKeeperRuby
 			key_value = []
 			raw_data = []
 			txid = []
-			i = 0
-			begin
+			for i in 0...count
 				address.push(out[0]['result'][i]['publishers'])		        # returns publisher address
 				key_value.push(out[0]['result'][i]['key'])			          # returns key value of data
 				data = out[0]['result'][i]['data']					              # returns hex data
 	      raw_data.push(data.to_byte_string)                     	  # returns raw data
 				txid.push(out[0]['result'][i]['txid'])				            # returns tx id
-			end until i <count
-			return address, key_value, raw_data, txid;
+			end
+			retrieve = {:address => address,:key_value => key_value,:raw_data => raw_data,:txid => txid}
+			retrieveditems = JSON.generate retrieve
+			return retrieveditems
 	  end
 	end
 

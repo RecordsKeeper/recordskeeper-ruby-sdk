@@ -1,7 +1,8 @@
 require 'test/unit'
-require_relative ('RecordsKeeperRuby/transaction.rb')
+require 'json'
+require_relative ('RecordsKeeperRubyLib/transaction.rb')
 
-module RecordsKeeperRuby
+module RecordsKeeperRubyLib
   class TransactionTest < Test::Unit::TestCase
     @@cfg = YAML::load(File.open('config.yaml','r'))
     @@net = Transaction.variable
@@ -25,23 +26,22 @@ module RecordsKeeperRuby
     end
 
     def test_createrawtransaction
-    	txhex = Transaction.createRawTransaction @@net['miningaddress'], @@net['validaddress'], @@net['amount'], @@net['testdata']
+    	txhex = Transaction.createRawTransaction @@net['miningaddress'], @@net['validaddress'], @@net['testdata'], @@net['amount']
       tx_size = txhex.length
     	assert_equal tx_size, 268
     end
 
     def test_sendsignedtransaction
-    	txid = Transaction.sendSignedTransaction @@net['miningaddress'], @@net['validaddress'] , @@net['amount'], @@net['privatekey'],@@net['testdata']
+    	txid = Transaction.sendSignedTransaction @@net['miningaddress'], @@net['validaddress'] ,@@net['testdata'], @@net['amount'], @@net['privatekey']
       tx_size = txid.length
     	assert_equal tx_size, 64
     end
 
     def test_retrievetransaction
-
-    	data = Transaction.retrieveTransaction @@net['dumptxid']
-      sentdata = data[0]
+    	data = JSON.parse Transaction.retrieveTransaction @@net['dumptxid']
+      sentdata = data['sent_data']
     	assert_equal sentdata, "hellodata"
-      sentamount = data[1]
+      sentamount = data['sent_amount']
       assert_operator sentamount, :>=, 0
     end
 

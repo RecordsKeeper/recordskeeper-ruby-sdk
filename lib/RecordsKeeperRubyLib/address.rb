@@ -10,22 +10,15 @@ require 'binary_parser'
 require 'yaml'
 
 # Address class to access address related functions
-module RecordsKeeperRuby
+module RecordsKeeperRubyLib
 	class Address
 		# Import values from configuration file.
 		cfg = YAML::load(File.open('config.yaml','r'))
-		@network = cfg['testnet']															# 'network' variable to store the network that you want to access
-		if @network==cfg['testnet']
-			@url = cfg['testnet']['url']
-			@user = cfg['testnet']['rkuser']
-			@password = cfg['testnet']['passwd']
-			@chain = cfg['testnet']['chain']
-		else
-			@url = cfg['mainnet']['url']
-			@user = cfg['mainnet']['rkuser']
-			@password = cfg['mainnet']['passwd']
-			@chain = cfg['mainnet']['chain']
-		end
+		@network = cfg['network']
+		@url = cfg['network']['url']
+		@user = cfg['network']['rkuser']
+		@password = cfg['network']['passwd']
+		@chain = cfg['network']['chain']
 
 		def self.variable
 			net = @network
@@ -105,7 +98,9 @@ module RecordsKeeperRuby
 			for i in 0..address_count
 				address.push(out[0]['result'][i])
 			end
-			return address, address_count;																			# Returns all addresses and address count
+			retrieved = { :address => address,:address_count => address_count}
+			retrievedinfo = JSON.generate retrieved
+			return retrievedinfo
 	  end
 
 		# Function to check if given address is valid or not
@@ -137,11 +132,16 @@ module RecordsKeeperRuby
 	 		}
 	 		response = HTTParty.get(@url, options)
 	 		out = response.parsed_response
-			permission = out[0]['result']['ismine']
-			if permission
-				permissionCheck = "Address has mining permission"										# Prints that address has mining permission
-		 	else
-			 	permissionCheck = "Address has not given mining permission"					# Prints that address hasn't been given mining permission
+			check = out[0]['result']['isvalid']
+			if check
+				permission = out[0]['result']['ismine']
+				if permission
+					permissionCheck = "Address has mining permission"										# Prints that address has mining permission
+			 	else
+				 	permissionCheck = "Address has not given mining permission"					# Prints that address hasn't been given mining permission
+				end
+			else
+				permissionCheck = "Invalid address";
 			end
 			return permissionCheck;																								# Returns the permission status
 		end

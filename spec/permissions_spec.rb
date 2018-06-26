@@ -1,7 +1,8 @@
 require 'test/unit'
-require_relative ('RecordsKeeperRuby/permissions.rb')
+require 'json'
+require_relative ('RecordsKeeperRubyLib/permissions.rb')
 
-module RecordsKeeperRuby
+module RecordsKeeperRubyLib
   class PermissionsTest < Test::Unit::TestCase
     @@cfg = YAML::load(File.open('config.yaml','r'))
     @@net = Permissions.variable

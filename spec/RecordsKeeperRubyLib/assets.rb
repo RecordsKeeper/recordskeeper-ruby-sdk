@@ -10,29 +10,21 @@ require 'binary_parser'
 require 'yaml'
 require 'hex_string'
 
-module RecordsKeeperRuby
+module RecordsKeeperRubyLib
 	class Assets
 		# # Entry point for accessing Block class resources.
 		# # Import values from config file.
 		cfg = YAML::load(File.open('config.yaml','r'))
-		@network = cfg['testnet']								# Network variable to store the networrk that you want to access
-		if @network==cfg['testnet']
-			@url = cfg['testnet']['url']
-			@user = cfg['testnet']['rkuser']
-			@password = cfg['testnet']['passwd']
-			@chain = cfg['testnet']['chain']
-		else
-			@url = cfg['mainnet']['url']
-			@user = cfg['mainnet']['rkuser']
-			@password = cfg['mainnet']['passwd']
-			@chain = cfg['mainnet']['chain']
-		end
+		@network = cfg['network']
+		@url = cfg['network']['url']
+		@user = cfg['network']['rkuser']
+		@password = cfg['network']['passwd']
+		@chain = cfg['network']['chain']
 
 		def self.variable
 			net = @network
 			return net
 		end
-
 
 	  # Function to create or issue an asset
 	  def self.createAsset address, asset_name, asset_qty
@@ -44,7 +36,12 @@ module RecordsKeeperRuby
 	    }
 	    response = HTTParty.get(@url, options)
 	    out = response.parsed_response
-	    txid = out[0]['result']
+			check = out[0]['result']
+			if check == nil
+				txid = "Asset or stream with this name already exists"
+			else
+		  	txid = out[0]['result']
+			end
 	    return txid;										# Variable to store issue transaction id
 	  end
 
@@ -67,7 +64,9 @@ module RecordsKeeperRuby
 	      issue_id.push(out[0]['result'][i]['issuetxid'])	  			# Returns issue id
 	      issue_qty.push(out[0]['result'][i]['issueraw'])					# Returns issue quantity
 	    end
-	    return asset_name, issue_id, issue_qty, asset_count;
+			retrieve = {:assert_name => assert_name,:issue_id => issue_id,:issue_qty => issue_qty,:asset_count => asset_count}
+			retrievedinfo = JSON.generate retrieve
+			return retrievedinfo
 	  end
 
 		# Function to send quantity of assets to an address
@@ -83,5 +82,6 @@ module RecordsKeeperRuby
 			txid = out[0]['result']
 			return txid;										# Variable to store send asset transaction id
 		end
+
 	end
 end

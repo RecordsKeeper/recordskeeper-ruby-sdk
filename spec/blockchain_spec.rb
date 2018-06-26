@@ -1,29 +1,30 @@
 require 'test/unit'
-require_relative ('RecordsKeeperRuby/blockchain.rb')
+require 'json'
+require_relative ('RecordsKeeperRubyLib/blockchain.rb')
 
-module RecordsKeeperRuby
+module RecordsKeeperRubyLib
   class BlockchainTest < Test::Unit::TestCase
     @@cfg = YAML::load(File.open('config.yaml','r'))
     @@net = Blockchain.variable
 
     def test_getchaininfo
-      chainname = Blockchain.getChainInfo[7]
-      assert_equal chainname, @@net['chain']
-      rootstream = Blockchain.getChainInfo[2]
-      assert_equal rootstream, "root"
-      rpcport = Blockchain.getChainInfo[5]
-      assert_equal rpcport, @@net['port']
-      networkport = Blockchain.getChainInfo[4]
-      assert_equal networkport, 8379
+      chainname = JSON.parse Blockchain.getChainInfo
+      assert_equal chainname['chain_name'], @@net['chain']
+      rootstream = JSON.parse Blockchain.getChainInfo
+      assert_equal rootstream['root_stream'], "root"
+      rpcport = JSON.parse Blockchain.getChainInfo
+      assert_equal rpcport['default_rpcport'], @@net['port']
+      networkport = JSON.parse Blockchain.getChainInfo
+      assert_equal networkport['default_networkport'], 8379
     end
 
     def test_getnodeinfo
-      info = Blockchain.getNodeInfo[1]
-      assert_operator info, :>, 60
-      balance = Blockchain.getNodeInfo[0]
-      assert_not_nil balance
-      difficulty = Blockchain.getNodeInfo[3]
-      assert_operator difficulty, :<, 1
+      info = JSON.parse Blockchain.getNodeInfo
+      assert_operator info['synced_blocks'], :>, 60
+      balance = JSON.parse Blockchain.getNodeInfo
+      assert_not_nil balance['node_balance']
+      difficulty = JSON.parse Blockchain.getNodeInfo
+      assert_operator difficulty['difficulty'], :<, 1
     end
 
     def test_permissions
@@ -32,10 +33,10 @@ module RecordsKeeperRuby
     end
 
     def test_getpendingtransactions
-      pendingtx = Blockchain.getpendingTransactions[1]
-      assert_equal pendingtx, []
-      pendingtxcount = Blockchain.getpendingTransactions[0]
-      assert_operator pendingtxcount, :>=, 0
+      pendingtxcount = JSON.parse Blockchain.getpendingTransactions
+      assert_equal pendingtxcount['tx_count'], 0
+      pendingtx = JSON.parse Blockchain.getpendingTransactions
+      assert_equal pendingtx['tx'], "No pending transactions"
     end
 
     def test_checknodebalance

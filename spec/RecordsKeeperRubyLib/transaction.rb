@@ -73,7 +73,11 @@ module RecordsKeeperRubyLib
 	    }
 	    response = HTTParty.get(@url, options)
 	    out = response.parsed_response
+		if out[0]['result']['complete']
 			signedHex = out[0]['result']['hex']
+		else
+			signedHex = "Transaction has not been signed."
+		end
 			return signedHex;
 	  end
 
@@ -172,6 +176,7 @@ module RecordsKeeperRubyLib
 	    fees = balance_amount.abs - sent_amount
 	    return fees;				#returns fees
 	  end
+	  
 
 	end
 

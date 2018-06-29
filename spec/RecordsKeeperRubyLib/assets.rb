@@ -38,7 +38,7 @@ module RecordsKeeperRubyLib
 	    out = response.parsed_response
 			check = out[0]['result']
 			if check == nil
-				txid = "Asset or stream with this name already exists"
+				txid = out[0]['error']['message']
 			else
 		  	txid = out[0]['result']
 			end
@@ -64,7 +64,7 @@ module RecordsKeeperRubyLib
 	      issue_id.push(out[0]['result'][i]['issuetxid'])	  			# Returns issue id
 	      issue_qty.push(out[0]['result'][i]['issueraw'])					# Returns issue quantity
 	    end
-			retrieve = {:assert_name => assert_name,:issue_id => issue_id,:issue_qty => issue_qty,:asset_count => asset_count}
+			retrieve = {:asset_name => asset_name,:issue_id => issue_id,:issue_qty => issue_qty,:asset_count => asset_count}
 			retrievedinfo = JSON.generate retrieve
 			return retrievedinfo
 	  end
@@ -79,9 +79,14 @@ module RecordsKeeperRubyLib
 	    }
 	    response = HTTParty.get(@url, options)
 	    out = response.parsed_response
-			txid = out[0]['result']
+			if out[0]['result'].nil?
+				txid = out[0]['error']['message']
+			else 
+				txid = out[0]['result']
+			end
 			return txid;										# Variable to store send asset transaction id
 		end
 
 	end
+
 end

@@ -81,9 +81,9 @@ Import user name and password values from config file to authenticate the node:
 
 Under recordskeeper_ruby_ spec/test using test data from config.yaml file.
 - Command to run a all the tests: 
-rake spec 
+[rake spec]
 - Command to a specific test file:
-rspec spec/[test_name.rb]
+[rspec spec/test_name.rb]
 
 
 ## Documentation

@@ -13,12 +13,23 @@ require 'yaml'
 module RecordsKeeperRubyLib
 	class Blockchain
 
-		cfg = YAML::load(File.open('config.yaml','r'))
-		@network = cfg['network']
-		@url = cfg['network']['url']
-		@user = cfg['network']['rkuser']
-		@password = cfg['network']['passwd']
-		@chain = cfg['network']['chain']
+		if File.exist?('config.yaml')
+			# Import values from configuration file.
+			cfg = YAML::load(File.open('config.yaml','r'))
+			@network = cfg['network']
+			@url = cfg['network']['url']
+			@user = cfg['network']['rkuser']
+			@password = cfg['network']['passwd']
+			@chain = cfg['network']['chain']
+		else
+			#pp ENV
+			@network = ENV['network']
+			@url = ENV['url']
+    		@user = ENV['rkuser']
+    		@password = ENV['passwd']
+    		@chain = ENV['chain']	
+		end
+
 
 		def self.variable
 			net = @network

@@ -5,10 +5,9 @@ require_relative ('RecordsKeeperRubyLib/assets.rb')
 module RecordsKeeperRubyLib
   class AssetsTest < Test::Unit::TestCase
     @@cfg = YAML::load(File.open('config.yaml','r'))
-    @@net = Assets.variable
 
     def test_createasset
-      txid = Assets.createAsset @@net['validaddress'], "xyz", 100
+      txid = Assets.createAsset @@cfg['validaddress'], "xyz", 100
       assert_equal txid, "Asset or stream with this name already exists"
     end
 

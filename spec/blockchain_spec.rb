@@ -5,15 +5,14 @@ require_relative ('RecordsKeeperRubyLib/blockchain.rb')
 module RecordsKeeperRubyLib
   class BlockchainTest < Test::Unit::TestCase
     @@cfg = YAML::load(File.open('config.yaml','r'))
-    @@net = Blockchain.variable
 
     def test_getchaininfo
       chainname = JSON.parse Blockchain.getChainInfo
-      assert_equal chainname['chain_name'], @@net['chain']
+      assert_equal chainname['chain_name'], @@cfg['chain']
       rootstream = JSON.parse Blockchain.getChainInfo
       assert_equal rootstream['root_stream'], "root"
       rpcport = JSON.parse Blockchain.getChainInfo
-      assert_equal rpcport['default_rpcport'], @@net['port']
+      assert_equal rpcport['default_rpcport'], @@cfg['port']
       networkport = JSON.parse Blockchain.getChainInfo
       assert_equal networkport['default_networkport'], 8379
     end

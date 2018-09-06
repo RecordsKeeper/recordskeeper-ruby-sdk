@@ -13,27 +13,23 @@ require 'yaml'
 module RecordsKeeperRubyLib
 	class Blockchain
 
+		# # Entry point for accessing Blockchain class functions
 		if File.exist?('config.yaml')
 			# Import values from configuration file.
 			cfg = YAML::load(File.open('config.yaml','r'))
-			@network = cfg['network']
-			@url = cfg['network']['url']
-			@user = cfg['network']['rkuser']
-			@password = cfg['network']['passwd']
-			@chain = cfg['network']['chain']
+			
+			@url = cfg['url']
+			@user = cfg['rkuser']
+			@password = cfg['passwd']
+			@chain = cfg['chain']
+		
 		else
-			#pp ENV
-			@network = ENV['network']
+			#Import using ENV variables
+			
 			@url = ENV['url']
     		@user = ENV['rkuser']
     		@password = ENV['passwd']
     		@chain = ENV['chain']	
-		end
-
-
-		def self.variable
-			net = @network
-			return net
 		end
 
 		# Function to retrieve RecordsKeeper Blockchain parameters
@@ -95,7 +91,9 @@ module RecordsKeeperRubyLib
 			for i in 0...pms_count
 				permissions.push(out[0]['result'][i]['type'])
 			end
-			return permissions;																# Returns list of permissions
+
+			permissions_list = permissions.uniq
+			return permissions_list;																# Returns list of permissions
 		end
 
 		# Function to retrieve pending transactions information on RecordsKeeper Blockchain
@@ -127,8 +125,8 @@ module RecordsKeeperRubyLib
 				end
 			end
 			pending = {:tx_count => tx_count,:tx => tx}
-			pendingtransac = JSON.generate pending														# Returns pending tx and tx count
-			return pendingtransac
+			pendingtransaction = JSON.generate pending														# Returns pending tx and tx count
+			return pendingtransaction
 		end
 
 		# Function to check node's total balance
@@ -141,7 +139,8 @@ module RecordsKeeperRubyLib
 			}
 			response = HTTParty.get(@url, options)
 			out = response.parsed_response
-			balance = out[0]['result']['total'][0]['qty']
+
+			balance = out[0]['result']['total'][-1]['qty']
 			return balance;														# Returns balance of  node
 		end
 	end

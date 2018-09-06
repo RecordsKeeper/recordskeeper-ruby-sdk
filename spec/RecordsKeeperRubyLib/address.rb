@@ -9,29 +9,25 @@ require 'json'
 require 'binary_parser'
 require 'yaml'
 
-# Address class to access address related functions
+# Address class to access Address related functions
 module RecordsKeeperRubyLib
 	class Address
 		if File.exist?('config.yaml')
+			
 			# Import values from configuration file.
 			cfg = YAML::load(File.open('config.yaml','r'))
-			@network = cfg['network']
-			@url = cfg['network']['url']
-			@user = cfg['network']['rkuser']
-			@password = cfg['network']['passwd']
-			@chain = cfg['network']['chain']
+			
+			@url = cfg['url']
+			@user = cfg['rkuser']
+			@password = cfg['passwd']
+			@chain = cfg['chain']
+		
 		else
-			#pp ENV
-			@network = ENV['network']
+			#Import using ENV variables
 			@url = ENV['url']
     		@user = ENV['rkuser']
     		@password = ENV['passwd']
     		@chain = ENV['chain']	
-		end
-
-		def self.variable
-			net = @network
-			return net
 		end
 
 
@@ -49,7 +45,6 @@ module RecordsKeeperRubyLib
 			address = out[0]['result']
 			return address
 		end
-		puts getAddress
 
 		# Function to generate a new multisignature address
 		def self.getMultisigAddress nrequired, key		#getMultisigAddress() function definition
@@ -142,7 +137,9 @@ module RecordsKeeperRubyLib
 	 		}
 	 		response = HTTParty.get(@url, options)
 	 		out = response.parsed_response
+
 			check = out[0]['result']['isvalid']
+
 			if check
 				permission = out[0]['result']['ismine']
 				if permission
@@ -166,7 +163,12 @@ module RecordsKeeperRubyLib
 	 		}
 	 		response = HTTParty.get(@url, options)
 	 		out = response.parsed_response
-			balance = out[0]['result'][0]['qty']
+	 		check = out[0]['result']
+	 		if check
+				balance = out[0]['result'][0]['qty']
+			else
+				balance = out[0]['error']['message']
+			end
 	 		return balance;																						# Returns balance of a particular node address
 		end
 

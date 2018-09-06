@@ -13,31 +13,26 @@ require 'yaml'
 
 module RecordsKeeperRubyLib
 	class Block
-
-		#Entry point for accessing Block class resources.
+		# # Entry point for accessing Block class functions
 		if File.exist?('config.yaml')
 			# Import values from configuration file.
 			cfg = YAML::load(File.open('config.yaml','r'))
-			@network = cfg['network']
-			@url = cfg['network']['url']
-			@user = cfg['network']['rkuser']
-			@password = cfg['network']['passwd']
-			@chain = cfg['network']['chain']
+			
+			@url = cfg['url']
+			@user = cfg['rkuser']
+			@password = cfg['passwd']
+			@chain = cfg['chain']
+		
 		else
-			#pp ENV
-			@network = ENV['network']
+			#Import using ENV variables
+			
 			@url = ENV['url']
     		@user = ENV['rkuser']
     		@password = ENV['passwd']
     		@chain = ENV['chain']	
 		end
 
-
-		def self.variable
-			net = @network
-			return net
-		end
-
+		# function to retrieve data of a particular block no.
 		def self.blockinfo block_height
 			height = block_height.to_s
 			auth = {:username => @user, :password => @password}
@@ -68,6 +63,7 @@ module RecordsKeeperRubyLib
 			return retrievedinfo
 		end
 
+		# function to retrieve data of blocks in a particular range
 		def self.retrieveBlocks block_range
 			blockhash = []
 			miner = []

@@ -1,8 +1,8 @@
 # config.yaml
-network:
-    url: testurl
-    rkuser: rkuser
-    passwd: rkpwd
-    chain: test-chain
-    port: testport
-    
+
+url: testurl
+rkuser: rkuser
+passwd: rkpwd
+chain: test-chain
+port: testport
+

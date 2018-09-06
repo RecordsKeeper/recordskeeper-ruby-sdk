@@ -5,7 +5,6 @@ require_relative ('RecordsKeeperRubyLib/wallet.rb')
 module RecordsKeeperRubyLib
   class WalletTest < Test::Unit::TestCase
     @@cfg = YAML::load(File.open('config.yaml','r'))
-    @@net = Wallet.variable
 
     def test_createwallet
       address = JSON.parse Wallet.createWallet
@@ -14,8 +13,8 @@ module RecordsKeeperRubyLib
     end
 
     def test_getprivkey
-      checkprivkey = Wallet.getPrivateKey @@net['miningaddress']
-      assert_equal checkprivkey, @@net['privatekey']
+      checkprivkey = Wallet.getPrivateKey @@cfg['miningaddress']
+      assert_equal checkprivkey, @@cfg['privatekey']
     end
 
     def test_retrievewalletinfo
@@ -24,12 +23,12 @@ module RecordsKeeperRubyLib
     end
 
     def test_signmessage
-      signedMessage = Wallet.signMessage @@net['miningaddress'], @@net['testdata']
-      assert_equal signedMessage, @@net['signedtestdata']
+      signedMessage = Wallet.signMessage @@cfg['miningaddress'], @@cfg['testdata']
+      assert_equal signedMessage, @@cfg['signedtestdata']
     end
 
     def test_verifymessage
-      validity = Wallet.verifyMessage @@net['miningaddress'], @@net['signedtestdata'], @@net['testdata']
+      validity = Wallet.verifyMessage @@cfg['miningaddress'], @@cfg['signedtestdata'], @@cfg['testdata']
       assert_equal validity, "Yes, message is verified"
     end
 

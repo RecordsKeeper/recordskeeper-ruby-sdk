@@ -15,29 +15,25 @@ module RecordsKeeperRubyLib
 
 	class Transaction
 
-		# Entry point for accessing Block class resources.
+		# # Entry point for accessing Transaction class functions
 		if File.exist?('config.yaml')
 			# Import values from configuration file.
 			cfg = YAML::load(File.open('config.yaml','r'))
-			@network = cfg['network']
-			@url = cfg['network']['url']
-			@user = cfg['network']['rkuser']
-			@password = cfg['network']['passwd']
-			@chain = cfg['network']['chain']
+			
+			@url = cfg['url']
+			@user = cfg['rkuser']
+			@password = cfg['passwd']
+			@chain = cfg['chain']
+		
 		else
-			#pp ENV
-			@network = ENV['network']
+			#Import using ENV variables
+			
 			@url = ENV['url']
     		@user = ENV['rkuser']
     		@password = ENV['passwd']
     		@chain = ENV['chain']	
 		end
 
-
-		def self.variable
-			net = @network
-			return net
-		end
 
 	  # Function to send transaction on RecordsKeeper Blockchain
 	  def self.sendTransaction sender_address, receiveraddress, data, amount
@@ -51,12 +47,18 @@ module RecordsKeeperRubyLib
 	    }
 	    response = HTTParty.get(@url, options)
 	    out = response.parsed_response
-	    txid = out[0]['result']
+	    check = out[0]['result']
+
+		if check.nil?
+			txid = out[0]['error']['message']
+		else 
+	    	txid = out[0]['result']
+	    end
 	    return txid;
 	  end
 
 	  # Function to create transaction hex on RecordsKeeper Blockchain
-		def self.createRawTransaction sender_address, receiveraddress, data, amount
+	  def self.createRawTransaction sender_address, receiveraddress, data, amount
 	    data_hex = data.to_hex_string
 	    datahex = data_hex.delete(' ')
 	    auth = {:username => @user, :password => @password}
@@ -67,14 +69,20 @@ module RecordsKeeperRubyLib
 	    }
 	    response = HTTParty.get(@url, options)
 	    out = response.parsed_response
+	    check = out[0]['result']
+
+		if check.nil?
+			txhex = out[0]['error']['message']
+		else 
 			txhex = out[0]['result']
-			return txhex;
+		end
+		return txhex;
 	  end
 
 	  # Function to sign transaction on RecordsKeeper Blockchain
 	  def self.signRawTransaction txHex, private_key
-			priv_key = []
-			priv_key.push(private_key)
+		priv_key = []
+		priv_key.push(private_key)
 	    auth = {:username => @user, :password => @password}
 	    options = {
 	      :headers => headers= {"Content-Type"=> "application/json","Cache-Control" => "no-cache"},
@@ -86,13 +94,13 @@ module RecordsKeeperRubyLib
 		if out[0]['result']['complete']
 			signedHex = out[0]['result']['hex']
 		else
-			signedHex = "Transaction has not been signed."
+			signedHex = "Transaction has not been signed properly."
 		end
 			return signedHex;
 	  end
 
 	  # Function to send raw transaction on RecordsKeeper Blockchain
-		def self.sendRawTransaction signed_txHex
+	  def self.sendRawTransaction signed_txHex
 	    auth = {:username => @user, :password => @password}
 	    options = {
 	      :headers => headers= {"Content-Type"=> "application/json","Cache-Control" => "no-cache"},
@@ -101,13 +109,13 @@ module RecordsKeeperRubyLib
 	    }
 	    response = HTTParty.get(@url, options)
 	    out = response.parsed_response
-			txn = out[0]['result']
-			if txn.nil?
-				txid = out[0]['error']['message']
-			else
-				txid = txn
-			end
-			return txid;
+		txn = out[0]['result']
+		if txn.nil?
+			txid = out[0]['error']['message']
+		else
+			txid = txn
+		end
+		return txid;
 	  end
 
 	  # Function to send signed transaction on RecordsKeeper Blockchain
@@ -163,16 +171,22 @@ module RecordsKeeperRubyLib
 	    }
 	    response = HTTParty.get(@url, options)
 	    out = response.parsed_response
-	    sent_hex_data = out[0]['result']['data'][0]
-	    sent_data = sent_hex_data.to_byte_string
-	    sent_amount = out[0]['result']['vout'][0]['value']
+	    check = out[0]['result']
+
+		if check.nil?
+			retrievedinfo = out[0]['error']['message']
+		else 
+		    sent_hex_data = out[0]['result']['data'][0]
+		    sent_data = sent_hex_data.to_byte_string
+		    sent_amount = out[0]['result']['vout'][0]['value']
 			retrieve = {:sent_data => sent_data,:sent_amount => sent_amount }
 			retrievedinfo = JSON.generate retrieve
-			return retrievedinfo
+		end
+		return retrievedinfo
 	  end
 
-	  # Function to calculate transaction's fee on RecordsKeeper Blockchain
-	  def self.getFee address, tx_id
+	 # Function to calculate transaction's fee on RecordsKeeper Blockchain
+	 def self.getFee address, tx_id
 	    auth = {:username => @user, :password => @password}
 	    options = {
 	      :headers => headers= {"Content-Type"=> "application/json","Cache-Control" => "no-cache"},
@@ -181,11 +195,17 @@ module RecordsKeeperRubyLib
 	    }
 	    response = HTTParty.get(@url, options)
 	    out = response.parsed_response
-	    sent_amount = out[0]['result']['vout'][0]['amount']
-	    balance_amount = out[0]['result']['balance']['amount']
-	    fees = balance_amount.abs - sent_amount
+	    check = out[0]['result']
+
+		if check.nil?
+			fees = out[0]['error']['message']
+		else 
+		    sent_amount = out[0]['result']['vout'][0]['amount']
+		    balance_amount = out[0]['result']['balance']['amount']
+		    fees = balance_amount.abs - sent_amount
+		end
 	    return fees;				#returns fees
-	  end
+	 end
 	  
 
 	end

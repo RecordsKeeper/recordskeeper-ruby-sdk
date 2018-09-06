@@ -1,6 +1,6 @@
 #   Library to work with assets.
 
-#   You can issue assets or retrieve assets information by using asset class.
+#   You can issue assets, send assets or retrieve assets information by using asset class.
 #   You just have to pass parameters to invoke the pre-defined functions.
 
 require 'rubygems'
@@ -12,18 +12,19 @@ require 'hex_string'
 
 module RecordsKeeperRubyLib
 	class Assets
-		# # Entry point for accessing Block class resources.
+		# # Entry point for accessing Asset class functions
 		if File.exist?('config.yaml')
 			# Import values from configuration file.
 			cfg = YAML::load(File.open('config.yaml','r'))
-			@network = cfg['network']
-			@url = cfg['network']['url']
-			@user = cfg['network']['rkuser']
-			@password = cfg['network']['passwd']
-			@chain = cfg['network']['chain']
+			
+			@url = cfg['url']
+			@user = cfg['rkuser']
+			@password = cfg['passwd']
+			@chain = cfg['chain']
+		
 		else
-			#pp ENV
-			@network = ENV['network']
+			#Import using ENV variables
+			
 			@url = ENV['url']
     		@user = ENV['rkuser']
     		@password = ENV['passwd']
@@ -31,13 +32,9 @@ module RecordsKeeperRubyLib
 		end
 
 
-		def self.variable
-			net = @network
-			return net
-		end
-
 	  # Function to create or issue an asset
-	  def self.createAsset address, asset_name, asset_qty
+	def self.createAsset address, asset_name, asset_qty
+
 	    auth = {:username => @user, :password => @password}
 	    options = {
 	      :headers => headers= {"Content-Type"=> "application/json","Cache-Control" => "no-cache"},
@@ -53,10 +50,10 @@ module RecordsKeeperRubyLib
 		  	txid = out[0]['result']
 			end
 	    return txid;										# Variable to store issue transaction id
-	  end
+	end
 
 	  # Function to retrieve assets information
-	  def self.retrieveAssets
+	def self.retrieveAssets
 	    asset_name = []
 	    issue_id = []
 	    issue_qty = []
@@ -77,25 +74,25 @@ module RecordsKeeperRubyLib
 			retrieve = {:asset_name => asset_name,:issue_id => issue_id,:issue_qty => issue_qty,:asset_count => asset_count}
 			retrievedinfo = JSON.generate retrieve
 			return retrievedinfo
-	  end
+	end
 
-		# Function to send quantity of assets to an address
-		def self.sendasset address, asset_name, asset_qty
-			auth = {:username => @user, :password => @password}
-	    options = {
-	      :headers => headers= {"Content-Type"=> "application/json","Cache-Control" => "no-cache"},
-	      :basic_auth => auth,
-	      :body => [ {"method":"sendasset","params":[address, asset_name, asset_qty],"jsonrpc":2.0,"id":"curltext","chain_name":@chain}].to_json
-	    }
-	    response = HTTParty.get(@url, options)
-	    out = response.parsed_response
-			if out[0]['result'].nil?
-				txid = out[0]['error']['message']
-			else 
-				txid = out[0]['result']
-			end
-			return txid;										# Variable to store send asset transaction id
+	# Function to send assets to an address
+	def self.sendasset address, asset_name, asset_qty
+		auth = {:username => @user, :password => @password}
+    	options = {
+      		:headers => headers= {"Content-Type"=> "application/json","Cache-Control" => "no-cache"},
+      		:basic_auth => auth,
+      		:body => [ {"method":"sendasset","params":[address, asset_name, asset_qty],"jsonrpc":2.0,"id":"curltext","chain_name":@chain}].to_json
+   		}
+    	response = HTTParty.get(@url, options)
+    	out = response.parsed_response
+		if out[0]['result'].nil?
+			txid = out[0]['error']['message']
+		else 
+			txid = out[0]['result']
 		end
+		return txid;										# Variable to store send asset transaction id
+	end
 
 	end
 

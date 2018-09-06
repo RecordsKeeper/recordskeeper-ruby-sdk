@@ -14,29 +14,25 @@ module RecordsKeeperRubyLib
 
 	class Permissions
 
-		# Entry point for accessing Block class resources.
+		# # Entry point for accessing Permissions class functions
 		if File.exist?('config.yaml')
 			# Import values from configuration file.
 			cfg = YAML::load(File.open('config.yaml','r'))
-			@network = cfg['network']
-			@url = cfg['network']['url']
-			@user = cfg['network']['rkuser']
-			@password = cfg['network']['passwd']
-			@chain = cfg['network']['chain']
+			
+			@url = cfg['url']
+			@user = cfg['rkuser']
+			@password = cfg['passwd']
+			@chain = cfg['chain']
+		
 		else
-			#pp ENV
-			@network = ENV['network']
+			#Import using ENV variables
+			
 			@url = ENV['url']
     		@user = ENV['rkuser']
     		@password = ENV['passwd']
     		@chain = ENV['chain']	
 		end
 
-
-		def self.variable
-			net = @network
-			return net
-		end
 
 	  # Function to grant permissions on RecordsKeeper Blockchain
 	  def self.grantPermission address, permissions

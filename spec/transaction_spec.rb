@@ -5,40 +5,39 @@ require_relative ('RecordsKeeperRubyLib/transaction.rb')
 module RecordsKeeperRubyLib
   class TransactionTest < Test::Unit::TestCase
     @@cfg = YAML::load(File.open('config.yaml','r'))
-    @@net = Transaction.variable
 
     def test_sendtransaction
-      txid = Transaction.sendTransaction @@net['miningaddress'], @@net['validaddress'], "hello", 0.2
+      txid = Transaction.sendTransaction @@cfg['miningaddress'], @@cfg['validaddress'], "hello", 0.2
       tx_size = txid.length
       assert_equal tx_size, 64
     end
 
     def test_sendrawtransaction
-      txid = Transaction.sendRawTransaction @@net['dumpsignedtxhex']
+      txid = Transaction.sendRawTransaction @@cfg['dumpsignedtxhex']
       tx_size = txid.length
       assert_equal tx_size, 34
     end
 
     def test_signrawtransaction
-    	txhex = Transaction.signRawTransaction @@net['dumptxhex'], @@net['privatekey']
+    	txhex = Transaction.signRawTransaction @@cfg['dumptxhex'], @@cfg['privatekey']
       tx_size = txhex.length
     	assert_equal tx_size, 268
     end
 
     def test_createrawtransaction
-    	txhex = Transaction.createRawTransaction @@net['miningaddress'], @@net['validaddress'], @@net['testdata'], @@net['amount']
+    	txhex = Transaction.createRawTransaction @@cfg['miningaddress'], @@cfg['validaddress'], @@cfg['testdata'], @@cfg['amount']
       tx_size = txhex.length
     	assert_equal tx_size, 268
     end
 
     def test_sendsignedtransaction
-    	txid = Transaction.sendSignedTransaction @@net['miningaddress'], @@net['validaddress'] ,@@net['testdata'], @@net['amount'], @@net['privatekey']
+    	txid = Transaction.sendSignedTransaction @@cfg['miningaddress'], @@cfg['validaddress'] ,@@cfg['testdata'], @@cfg['amount'], @@cfg['privatekey']
       tx_size = txid.length
     	assert_equal tx_size, 64
     end
 
     def test_retrievetransaction
-    	data = JSON.parse Transaction.retrieveTransaction @@net['dumptxid']
+    	data = JSON.parse Transaction.retrieveTransaction @@cfg['dumptxid']
       sentdata = data['sent_data']
     	assert_equal sentdata, "hellodata"
       sentamount = data['sent_amount']
@@ -46,7 +45,7 @@ module RecordsKeeperRubyLib
     end
 
     def test_getfee
-    	fees = Transaction.getFee @@net['miningaddress'], @@net['transactionid']
+    	fees = Transaction.getFee @@cfg['miningaddress'], @@cfg['transactionid']
     	assert_equal fees, 0.0269
     end
 

@@ -1,3 +1,3 @@
 module RecordsKeeperRubyLib
-  VERSION = "0.1.1"
+  VERSION = "0.4.0"
 end
